@@ -10,26 +10,26 @@ First lets cover what a four way handshake is. The four way handshake is how you
 
 The first thing we need to do is capture the handshake. To do that we will launch Kali and make your of the aircrack-ng suite.
 You will need a wireless adapter to perform these tasks. 
-![airmon](../pictures/airmon/airmon.png)
+![airmon](../pictures/airmon/airmon2.png)
 We confirm we can see our wireless adapter perfect! Next we will  need to put it into monitor mode. To do this simply type
 **airmon-ng start wlan0**
-![airmon](../pictures/airmon/airmonstart.png)
+![airmon](../pictures/airmon/airmonstart2.png)
 You will get some warning about processes that can cause trouble. To alleviate this just type **airmon-ng check kill**
-![airmon](../pictures/airmon/airmonkill.png)
+![airmon](../pictures/airmon/airmonkill2.png)
 check with airmon-ng to see if we have successfully put it into monitor mode. You should see mon attached at the end of the interface name now.
-![airmon](../pictures/airmon/aircheck.png)
+![airmon](../pictures/airmon/aircheck2.png)
 Perfect! We can see that it is in the correct mode. Now we can use airdump to find other AP's in the area. To start this process type **airdump-ng wlan0mon** you should be greeted with a heap of information. It might take a second.
-![airmon](../pictures/airmon/airdump.png)
+![airmon](../pictures/airmon/airdump2.png)
 From here we will pick out our own BSSID and make note of that and the channel it is on. In this case it is **testbssid channel 11** Great! Now we can start a capture with everything related to that channel to try and capture the handshake. To do this we use the command **airodump-ng -c 11 --bssid "bssid" -w capture wlan0mon**. The -c stands for channel the --bssid is self explanatory the -w is going to output a file called capture and the last parameter is the interface to use.
-![airmon](../pictures/airmon/airo.png)
+![airmon](../pictures/airmon/airo2.png)
 We are going to let that capture while we force the handshake. You could wait it might just take a while. To force it we use **aireplay-ng -0 2 -a "bssid" wlan0mon** . The -0 specifies we are going to use deauthentication packets and 2 is the amount. -a is the bssid and the last parameter is the interface. What this is going to do is kick everyone off the network and force a handshake to happen when they reconnect. It happens almost instantly.
-![airmon](../pictures/airmon/aireplay.png)
+![airmon](../pictures/airmon/aireplay2.png)
 We can confirm we got the handshake back on our capture up at the top it should say WPA handshake:
 
-![airmon](../pictures/airmon/handshake.png)
+![airmon](../pictures/airmon/handshake2.png)
 
 You can now close the capture. It should inform you how many handshakes were captured. If you type dir you can confirm you do indeed have several dump files. The one we are interested in is the .cap.
-![airmon](../pictures/airmon/capture.png)
+![airmon](../pictures/airmon/capture2.png)
 
 The current format is not acceptable to be cracked in hashcat. To fix this we will use a tool called cap2hccapx. You have two options here. There is an online tool to do this for you https://hashcat.net/cap2hccapx/ or you can do it manually. For this I went with manual. You are going to need to download cap2hccapx.c
 Go into  a folder location you would like to download it then type
